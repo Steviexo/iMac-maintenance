@@ -8,6 +8,19 @@ Willkommen im Repository **imac-maintenance**! Dieses Repository dient als **Wis
 
 Dieses Repository wächst mit meinen Erfahrungen und ist eine zentrale Anlaufstelle für alle Themen rund um die Wartung, Fehlerbehebung und Optimierung meines iMacs.
 
+## 🖥 Technische Ausstattung
+
+Dieses Repository basiert auf einem **iMac (Modell 16,2) mit Ubuntu 24.04 LTS**:
+
+- **Modell**: Apple iMac 21.5" (Late 2015) – iMac 16,2
+- **Prozessor**: Intel Core i5-5575R, 4 Kerne @ 2,8 GHz
+- **RAM**: 8 GB LPDDR3 (erweiterbar bis 16 GB)
+- **Grafik**: Intel Iris Pro Graphics 6200
+- **Speicher**: (Falls du eine SSD/Festplatte getauscht hast, kannst du hier dein Setup einfügen)
+- **Betriebssystem**: Ubuntu 24.04 LTS (anstelle von macOS)
+
+Falls du einen anderen iMac oder eine andere Linux-Version nutzt, können einige Anleitungen abweichen.
+
 ## 📂 Verzeichnisstruktur & Unterthemen
 
 ```
