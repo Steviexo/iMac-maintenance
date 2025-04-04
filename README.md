@@ -47,7 +47,7 @@ imac-maintenance/
 - **Geplante Hardware-Optimierungen**
 
 ### 🔹 **Software & Konfiguration**
-- **[Obsidian](docs/software/obsidian.md)**: Notizen und Wissensmanagement mit Obsidian
+- **[Obsidian](docs/software/obsidian)**: Notizen und Wissensmanagement mit Obsidian
 - **Optimierungen für macOS & Workflows** (Geplant)
 
 ### 🚧 **In Arbeit / Geplante Inhalte**
