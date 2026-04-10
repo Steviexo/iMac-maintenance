@@ -1,90 +1,119 @@
-# 📖 iMac-Maintenance – Dokumentation & Best Practices
+# iMac-maintenance
 
-Willkommen im Repository **imac-maintenance**! Dieses Repository dient als **Wissenssammlung und Best Practices für die Wartung und Optimierung meines iMacs**. Hier dokumentiere ich meine Erfahrungen, um:
+Dokumentation, Wartung und Troubleshooting für einen älteren Apple iMac, der mit Ubuntu LTS weiterbetrieben wird.
 
-✅ **Mein eigenes Wissen zu strukturieren & dokumentieren**\
-✅ **Anderen (auch nicht-tech-affinen) Nutzern verständliche Anleitungen bereitzustellen**\
-✅ **Meine Fortschritte als zukünftige Admin sichtbar zu machen**
+Das Repository dient als technische Arbeits- und Wissensbasis für den laufenden Betrieb, wiederkehrende Pflegeaufgaben, bekannte Besonderheiten sowie konkrete Vorfälle mit dokumentierten Workarounds.
 
-Dieses Repository wächst mit meinen Erfahrungen und ist eine zentrale Anlaufstelle für alle Themen rund um die Wartung, Fehlerbehebung und Optimierung meines iMacs.
+## Ziel des Repositories
 
-## 🖥 Technische Ausstattung
+Dieses Repository bündelt:
 
-Dieses Repository basiert auf einem **iMac (Modell 16,2) mit Ubuntu 24.04 LTS**:
+* Systemüberblick und technische Besonderheiten des Geräts
+* Betriebswissen für den Alltag unter Ubuntu LTS
+* dokumentierte Vorfälle mit Ursache, Analyse und Workaround
+* wiederverwendbare Troubleshooting-Pfade für typische Probleme
 
-- **Modell**: Apple iMac 21.5" (Late 2015) – iMac 16,2
-- **Prozessor**: Intel Core i5-5575R, 4 Kerne @ 2,8 GHz
-- **RAM**: 8 GB LPDDR3 (erweiterbar bis 16 GB)
-- **Grafik**: Intel Iris Pro Graphics 6200
-- **Speicher**: 250GB SSD
-- **Betriebssystem**: Ubuntu 24.04 LTS 64-bit (anstelle von macOS)
+Ziel ist es, Änderungen nachvollziehbar zu halten, spätere Fehlersuche zu erleichtern und bewährte Lösungen dauerhaft festzuhalten.
 
-Falls du einen anderen iMac oder eine andere Linux-Version nutzt, können einige Anleitungen abweichen.
+## Geltungsbereich und technische Ausstattung
 
-## 📂 Verzeichnisstruktur & Unterthemen
+Fokus dieses Repositories ist ein einzelnes Gerät:
 
+* **iMac (Modell 16,2) mit Ubuntu 24.04 LTS**:
+  - **Modell**: Apple iMac 21.5" (Late 2015) – iMac 16,2
+  - **Prozessor**: Intel Core i5-5575R, 4 Kerne @ 2,8 GHz
+  - **RAM**: 8 GB LPDDR3 (erweiterbar bis 16 GB)
+  - **Grafik**: Intel Iris Pro Graphics 6200
+  - **Speicher**: 250GB SSD
+  - **Betriebssystem**: Ubuntu 24.04 LTS 64-bit (anstelle von macOS)
+* Dokumentation von Hardware-, Display-, Power-, Boot- und Betriebsverhalten
+
+## Repository-Struktur
+
+```text
+iMac-maintenance/
+├── README.md
+├── docs/
+│   ├── 00-overview/
+│   │   └── system-overview.md
+│   ├── 01-architecture/
+│   │   └── power-display-and-boot-behavior.md
+│   ├── 02-operations/
+│   │   └── daily-usage-and-maintenance.md
+│   ├── 03-incidents/
+│   │   ├── imac-display-brightness-reset-after-screen-wake.md
+│   │   └── imac-suspend-causes-black-screen-or-hard-power-cycle.md
+│   └── 04-troubleshooting/
+│       ├── display-brightness-diagnostics.md
+│       └── suspend-power-state-diagnostics.md
+├── images/
+│   └── README.md
+└── scripts/
+    └── set_brightness.sh
 ```
-imac-maintenance/
-├── docs/                 # Dokumentation zu diesem Repository
-│   ├── README.md         # Einführung und Übersicht
-│   ├── architecture.md   # Technische Architektur
-│   ├── faq.md            # Häufig gestellte Fragen
-│   ├── installation.md   # Installationsanleitung
-│   ├── hardware/         # Hardware-Anpassungen & Fixes
-│   │   ├── brightness-fix.md  # Lösung für Bildschirmhelligkeitsprobleme
-│   ├── software/         # Software & Systemoptimierung
-│   │   ├── obsidian.md       # Einrichtung und Nutzung von Obsidian
-├── templates/            # Vorlagen für Anleitungen & Konfigurationen
-├── LICENSE               # Lizenzinformationen
-├── CONTRIBUTING.md       # Hinweise für Beiträge zum Repository
-└── README.md             # Diese Datei
-```
 
-## 📌 Enthaltene Themen
+## Dokumentationslogik
 
-### 🔹 **Hardware & Systemwartung**
-- **[iMac Brightness Fix](docs/hardware/brightness-fix.md)**: Lösung für das Bildschirmhelligkeitsproblem
-- **Geplante Hardware-Optimierungen**
+### `docs/00-overview/`
 
-### 🔹 **Software & Konfiguration**
-- **[Obsidian](docs/software/obsidian)**: Notizen und Wissensmanagement mit Obsidian
-- **Optimierungen für macOS & Workflows** (Geplant)
+Geräteüberblick, Betriebssystem, Eckdaten und Ausgangslage.
 
-### 🚧 **In Arbeit / Geplante Inhalte**
-- **Erweiterte macOS-Systemkonfiguration**
-- **Optimierung der Lüftersteuerung**
+### `docs/01-architecture/`
 
----
+Technische Besonderheiten und Designentscheidungen rund um Boot-Verhalten, Display-Ansteuerung, Energieverwaltung und ähnliche systemnahe Themen.
 
-## 📝 Warum dieses Repository?
-Ich nutze GitHub primär als **persönliches Dokumentations- und Wissensmanagement-Tool**. Dieses Repository hilft mir dabei, …
+### `docs/02-operations/`
 
-- meine **iMac-Wartung & Best Practices** zu dokumentieren
-- anderen (auch ohne tiefes technisches Wissen) Lösungen für ähnliche Probleme bereitzustellen
-- meine **Erfahrungen als zukünftiger Systemadministrator** sichtbar zu machen
+Laufender Betrieb, praktische Nutzung, Pflege, Updates, Alltagshinweise und bewusst gesetzte Betriebsgrenzen.
 
-Falls du Fragen hast oder Feedback geben möchtest, freue ich mich über deine Nachricht! 😊
+### `docs/03-incidents/`
 
----
+Konkrete Vorfälle mit Symptomen, Analyse, getesteten Ansätzen, umgesetztem Fix bzw. Workaround und aktuellem Betriebszustand.
 
-## 🚀 Verwendung
+### `docs/04-troubleshooting/`
 
-Hier findest du alle wichtigen Informationen zur Nutzung dieses Repositories.
+Allgemein nutzbare Diagnosepfade und wiederverwendbare Debugging-Schritte für typische Problemklassen.
 
-- **Installation**: Lies die [Installationsanleitung](docs/installation.md) für erste Schritte.
-- **FAQ**: Häufige Fragen werden in der [FAQ](docs/faq.md) beantwortet.
-- **Architektur**: Eine technische Übersicht findest du in [architecture.md](docs/architecture.md).
+## Bereits dokumentierte bzw. vorgesehene Themen
 
-## 🤝 Mitwirken
+### Incidents
 
-Falls du Änderungen oder Verbesserungen beisteuern möchtest, lies die [CONTRIBUTING.md](CONTRIBUTING.md).
+* Display-Helligkeit setzt sich nach Bildschirm-Aus oder Wake zurück
+* Suspend führt zu Schwarzbild, Absturz oder hartem Power-Cycle
 
-## 🔗 Weiterführende Informationen
+### Weitere sinnvolle Themen für später
 
-- [Offizielle Dokumentation](#)
-- [GitHub Issues](#)
-- [Projekt-Template](https://github.com/steviexo/project-template)
+* Boot-Parameter und Altlasten im Kernel-Command-Line-Setup
+* externer Monitorbetrieb und Multi-Monitor-Verhalten
+* Bluetooth- und USB-Besonderheiten
+* Login-, Session- und GDM-Verhalten
+* Backup- oder Wiederherstellungsstrategie für das Gerät
 
----
+## Arbeitsprinzipien für dieses Repo
 
-✍ **Letzte Aktualisierung:** 
+* Änderungen möglichst klein und nachvollziehbar halten
+* immer nur einen technischen Hebel gleichzeitig ändern
+* funktionierende Workarounds dokumentieren, auch wenn sie nicht „schön“ sind
+* instabile Funktionen lieber bewusst deaktivieren als halb kaputt weiterzubenutzen
+* Vorfälle nicht nur lösen, sondern mit Ursache, Auswirkungen und Betriebsfolgen dokumentieren
+
+## Aktueller technischer Stand
+
+Der iMac wird unter Ubuntu LTS mit dokumentierten Workarounds betrieben. Dazu gehört insbesondere:
+
+* ein `xrandr`-basierter Helligkeits-Workaround für das interne Display
+* ein bewusst deaktivierter Suspend-Betrieb, weil Suspend/Resume in dieser Umgebung nicht zuverlässig funktioniert
+
+Diese Entscheidungen sind keine theoretischen Optimierungen, sondern konkrete Maßnahmen aus realem Troubleshooting.
+
+## Pflegehinweis
+
+Bei Änderungen an Power-Management, Display-Verhalten, Boot-Parametern oder Login-/Sitzungsverwaltung sollte die Dokumentation sofort mit aktualisiert werden. Gerade bei älterer Apple-Hardware unter Linux entstehen sonst schnell historische Workarounds, bei denen später niemand mehr weiß, warum sie überhaupt existieren.
+
+## Geplante nächste Inhalte
+
+* `docs/00-overview/system-overview.md`
+* `docs/01-architecture/power-display-and-boot-behavior.md`
+* `docs/02-operations/daily-usage-and-maintenance.md`
+* die beiden Incident-Dateien aus `docs/03-incidents/`
+* später ergänzend Troubleshooting-Dateien unter `docs/04-troubleshooting/`
