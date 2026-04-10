@@ -167,6 +167,40 @@ Die frühere Dokumentation unter `docs/hardware/brightness-fix/` wurde in dieser
 
 * `docs/03-incidents/imac-display-brightness-reset-after-screen-wake.md`
 * `scripts/set_brightness.sh`
+
 ## Aktueller Betriebszustand
+
+Die Helligkeitsregelung wird als pragmatischer `xrandr`-Workaround betrieben. Es handelt sich nicht um eine echte Hardware-Backlight-Steuerung, sondern um softwareseitige Dimmung, die regelmäßig erneut angewendet werden muss.
+
+## Kurzzeitig manuell heller stellen
+
+Wenn du den iMac nur vorübergehend heller brauchst, stoppe zuerst den Timer. Sonst setzt er die Helligkeit kurz darauf wieder auf den Standardwert zurück.
+
+### Temporär heller stellen
+
+```bash
+systemctl --user stop screen-brightness-enforcer.timer
+xrandr --output DP-3 --brightness 0.60
+```
+
+Du kannst den Wert bei Bedarf anpassen, zum Beispiel:
+
+* `0.50` = etwas heller
+* `0.60` = merklich heller
+* `0.70` = deutlich heller
+
+### Wieder auf Standard zurückstellen
+
+```bash
+systemctl --user start screen-brightness-enforcer.timer
+/usr/local/bin/set_brightness.sh 0.35
+```
+
+### Status prüfen
+
+```bash
+systemctl --user status screen-brightness-enforcer.timer
+```
+
 
 Die Helligkeitsregelung wird als pragmatischer `xrandr`-Workaround betrieben. Es handelt sich nicht um eine echte Hardware-Backlight-Steuerung, sondern um softwareseitige Dimmung, die regelmäßig erneut angewendet werden muss.
