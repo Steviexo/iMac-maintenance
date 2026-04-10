@@ -62,6 +62,23 @@ Bei mehreren Displays war ein pauschaler Ansatz unzuverlässig. Erst die gezielt
 
 Der frühere Autostart-Ansatz setzte die Helligkeit beim Start korrekt. Im Alltag zeigte sich aber, dass der iMac die Helligkeit nach einigen Sekunden bzw. nach Wake wieder erhöhte. Deshalb musste der Wert regelmäßig neu gesetzt werden.
 
+### 6. Night Light verursachte Konflikte mit dem `xrandr`-Workaround
+
+Während der weiteren Analyse zeigte sich ein Hell-Dunkel-Wechsel des iMac-Displays. Ursache war sehr wahrscheinlich ein Konflikt zwischen GNOME Color Management bzw. Night Light und dem `xrandr`-basierten Helligkeits-Workaround.
+
+Relevante Beobachtungen:
+
+- `org.gnome.SettingsDaemon.Color.service` war aktiv
+- `gsd-color` lief in der grafischen Sitzung
+- `night-light-enabled` war auf `true`
+- `night-light-schedule-automatic` war auf `true`
+
+Nach dem Deaktivieren von Night Light verschwand das Hell-Dunkel-Verhalten.
+
+### 7. Doppelter Autostart wurde bereinigt
+
+Zusätzlich existierte neben dem Timer noch ein doppelter Autostart-Eintrag für den Helligkeits-Workaround. Der benutzerspezifische Eintrag unter `~/.config/autostart/set_brightness.desktop` wurde entfernt, damit nicht mehrere Mechanismen parallel dieselbe Aufgabe übernehmen.
+
 ## Umsetzung
 
 ### Aktuelles Skript
@@ -137,6 +154,18 @@ systemctl --user daemon-reload
 systemctl --user enable --now screen-brightness-enforcer.timer
 systemctl --user restart screen-brightness-enforcer.timer
 systemctl --user start screen-brightness-enforcer.service
+```
+## Zusätzliche Bereinigung
+
+Night Light wurde deaktiviert, um Konflikte mit dem xrandr-Workaround zu vermeiden:
+
+```bash
+gsettings set org.gnome.settings-daemon.plugins.color night-light-enabled false
+```
+Der doppelte benutzerspezifische Autostart wurde entfernt:
+
+```bash
+rm -f ~/.config/autostart/set_brightness.desktop
 ```
 
 ## Ergebnis
