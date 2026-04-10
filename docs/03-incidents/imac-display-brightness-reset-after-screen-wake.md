@@ -201,6 +201,3 @@ systemctl --user start screen-brightness-enforcer.timer
 ```bash
 systemctl --user status screen-brightness-enforcer.timer
 ```
-
-
-Die Helligkeitsregelung wird als pragmatischer `xrandr`-Workaround betrieben. Es handelt sich nicht um eine echte Hardware-Backlight-Steuerung, sondern um softwareseitige Dimmung, die regelmäßig erneut angewendet werden muss.
