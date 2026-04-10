@@ -2,62 +2,74 @@
 
 ## Zusammenfassung
 
-Auf einem älteren iMac mit Ubuntu LTS ließ sich die Bildschirmhelligkeit nicht über die Desktop-Einstellungen regeln. Nach dem Booten wurde die Helligkeit zwar per Workaround abgesenkt, nach dem Ausschalten bzw. erneuten Aktivieren des Bildschirms sprang sie jedoch wieder sichtbar auf ein zu helles Niveau zurück.
+Auf einem älteren iMac mit Ubuntu LTS ließ sich die Bildschirmhelligkeit nicht zuverlässig über die Desktop-Einstellungen regeln. Ein früherer Workaround reduzierte die Helligkeit bereits beim Start über `xrandr`, reichte im Alltag jedoch nicht dauerhaft aus. Nach dem Ausschalten bzw. erneuten Aktivieren des Bildschirms sprang die Helligkeit des iMac-Displays wieder sichtbar auf ein zu helles Niveau zurück.
 
-Die Ursache war, dass keine nutzbare Linux-Backlight-Schnittstelle vorhanden war und daher nur ein softwareseitiger `xrandr`-Workaround zur Verfügung stand. Dieser musste regelmäßig erneut angewendet werden, weil die Helligkeit des iMac-Displays nach einigen Sekunden wieder überschrieben wurde.
+Die Ursache war, dass keine nutzbare Linux-Backlight-Schnittstelle vorhanden war und deshalb nur ein softwareseitiger `xrandr`-Workaround zur Verfügung stand. Dieser musste nicht nur beim Login, sondern regelmäßig erneut angewendet werden.
+
+## Historie
+
+Ein früherer Stand dieses Repositories dokumentierte bereits einen funktionierenden Helligkeits-Workaround unter:
+
+- `docs/hardware/brightness-fix/README.md`
+- `docs/hardware/brightness-fix/set_brightness.sh`
+
+Dieser ältere Ansatz hielt bereits die wesentlichen Grundlagen fest:
+
+- Ubuntu sollte unter **Xorg statt Wayland** laufen
+- die Helligkeit wurde per `xrandr` gesetzt
+- der relevante iMac-Ausgang war `DP-3`
+- ein Skript `set_brightness.sh` wurde beim Start ausgeführt
+
+Im späteren Betrieb zeigte sich jedoch, dass dieser Ansatz nur einen Teil des Problems löste: Die Helligkeit ließ sich zwar nach dem Login absenken, sprang nach Bildschirm-Aus oder Wake aber erneut hoch. Die frühere Dokumentation wurde deshalb in diese Incident-Datei überführt und um den heutigen, alltagstauglichen Stand ergänzt.
 
 ## Betroffene Umgebung
 
 - Gerät: älterer Apple iMac
 - Betriebssystem: Ubuntu LTS
+- Display-Stack: X11 / Xorg
 - Displays:
   - iMac-Panel auf `DP-3`
   - externer Dell-Monitor auf `DP-2`
-- Desktop-Sitzung mit X11 / `xrandr`
 
 ## Symptome
 
 - keine funktionierende Helligkeitsregelung in den Ubuntu-Einstellungen
 - `ls /sys/class/backlight` lieferte keine nutzbaren Einträge
 - nach dem Login wurde die Helligkeit abgesenkt
-- nach Bildschirm-Aus oder Wake sprang die Helligkeit wieder hoch
-- der erste generische Workaround griff zunächst auf den falschen Monitor und dimmte den Dell statt des iMacs
+- nach Bildschirm-Aus oder Wake sprang die Helligkeit des iMac wieder hoch
+- ein generischer Multi-Monitor-Ansatz dimmte zunächst den Dell statt des iMac
+- ein alter systemweiter Dienst war für die Aufgabe ungeeignet
 
 ## Analyse
 
-### 1. Keine echte Backlight-Schnittstelle
+### 1. Keine nutzbare Linux-Backlight-Schnittstelle
 
-Die klassische Linux-Schnittstelle unter `/sys/class/backlight` war nicht vorhanden bzw. nicht nutzbar. Damit fiel die saubere Regelung über echte Hintergrundbeleuchtung aus.
+Die übliche Linux-Schnittstelle unter `/sys/class/backlight` war nicht nutzbar. Damit fiel eine echte Hardware-Backlight-Steuerung aus.
 
-### 2. Vorhandener Workaround war `xrandr`-basiert
+### 2. `xrandr` war der praktikable Workaround
 
-Im System war bereits ein älterer Workaround vorhanden:
+Die Helligkeit ließ sich auf diesem iMac nur softwareseitig per `xrandr` regeln. Das ist keine echte Steuerung der Hintergrundbeleuchtung, sondern ein visueller Dimm-Workaround.
 
-- Autostart-Eintrag: `~/.config/autostart/set_brightness.desktop`
-- Skript: `/usr/local/bin/set_brightness.sh`
+### 3. Xorg war Teil des funktionierenden Setups
 
-Das Skript nutzte `xrandr`, also eine softwareseitige Dimmung statt echter Backlight-Steuerung.
+Der ältere Workaround dokumentierte bereits, dass die Lösung unter Xorg lief. Diese Voraussetzung blieb für den funktionierenden `xrandr`-Ansatz relevant.
 
-### 3. Falscher Monitor im ersten Ansatz
+### 4. Der Zielmonitor musste fest auf `DP-3` gelegt werden
 
-Bei mehreren angeschlossenen Displays griff ein generischer Ansatz zunächst auf den falschen Ausgang. Sichtbar gedimmt wurde dadurch nur der Dell-Monitor, nicht das integrierte iMac-Display.
+Bei mehreren Displays war ein pauschaler Ansatz unzuverlässig. Erst die gezielte Ansprache von `DP-3` dimmte zuverlässig das interne iMac-Display.
 
-### 4. iMac-Panel musste gezielt auf `DP-3` festgelegt werden
+### 5. Einmaliges Setzen beim Login reichte nicht
 
-Die funktionierende Lösung bestand darin, das Skript gezielt auf den iMac-Ausgang `DP-3` festzulegen.
-
-### 5. Einmaliges Setzen reichte nicht
-
-Selbst wenn `xrandr --output DP-3 --brightness 0.35` sichtbar funktionierte, wurde die Helligkeit nach wenigen Sekunden wieder erhöht. Daher musste der Wert regelmäßig neu gesetzt werden.
+Der frühere Autostart-Ansatz setzte die Helligkeit beim Start korrekt. Im Alltag zeigte sich aber, dass der iMac die Helligkeit nach einigen Sekunden bzw. nach Wake wieder erhöhte. Deshalb musste der Wert regelmäßig neu gesetzt werden.
 
 ## Umsetzung
 
-### Skript
+### Aktuelles Skript
 
 Datei:
 
 ```bash
-/usr/local/bin/set_brightness.sh
+scripts/set_brightness.sh
 ````
 
 Inhalt:
@@ -131,8 +143,9 @@ systemctl --user start screen-brightness-enforcer.service
 
 * die Helligkeit des iMac-Displays wird nach dem Login automatisch abgesenkt
 * der Wert wird regelmäßig erneut gesetzt
+* das interne Display auf `DP-3` wird gezielt gedimmt
 * der Dell-Monitor bleibt unverändert
-* ein alter systemweiter Dienst war für diese Aufgabe ungeeignet und wurde aus dem Weg geräumt
+* der frühere Login-Workaround wurde nicht verworfen, sondern funktional erweitert
 
 ## Verworfen / geprüft
 
@@ -141,6 +154,19 @@ systemctl --user start screen-brightness-enforcer.service
 * ein pauschaler Multi-Monitor-Ansatz dimmte zunächst den falschen Monitor
 * eine aggressivere Dauerschleife war am Ende nicht nötig, weil der User-Timer ausreichend stabil funktionierte
 
+## Migration aus der alten Struktur
+
+Die frühere Dokumentation unter `docs/hardware/brightness-fix/` wurde in dieser Datei inhaltlich zusammengeführt.
+
+### Alt
+
+* `docs/hardware/brightness-fix/README.md`
+* `docs/hardware/brightness-fix/set_brightness.sh`
+
+### Neu
+
+* `docs/03-incidents/imac-display-brightness-reset-after-screen-wake.md`
+* `scripts/set_brightness.sh`
 ## Aktueller Betriebszustand
 
 Die Helligkeitsregelung wird als pragmatischer `xrandr`-Workaround betrieben. Es handelt sich nicht um eine echte Hardware-Backlight-Steuerung, sondern um softwareseitige Dimmung, die regelmäßig erneut angewendet werden muss.
