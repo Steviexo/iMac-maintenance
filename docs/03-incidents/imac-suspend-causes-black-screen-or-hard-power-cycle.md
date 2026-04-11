@@ -158,3 +158,40 @@ Dieses Thema wurde bewusst nicht vollständig „gelöst“, sondern stabil ents
 ## Fazit
 
 Für diese konkrete iMac-/Ubuntu-Kombination war Suspend nicht zuverlässig nutzbar. Der saubere und alltagstaugliche Weg bestand daher nicht in weiterer Optimierung, sondern im bewussten Abschalten der problematischen Funktion.
+
+## Zusätzliche Beobachtungen nach der ersten Stabilisierung
+
+### Login-/Display-Manager-Verhalten
+
+Im Verlauf der Analyse zeigte sich zusätzlich ein Problem beim Login:
+
+* nach der Passwort-Eingabe erschien zeitweise nur ein schwarzer Bildschirm mit sichtbarem Mauszeiger
+* im Journal zeigten sich Hinweise auf Probleme rund um GDM, GNOME Shell und `Xwayland`
+
+Die Benutzersitzung lief bereits auf `x11`, GDM selbst war jedoch noch nicht fest auf Xorg konfiguriert. Nach dem Setzen von
+
+```ini
+WaylandEnable=false
+```
+
+in `/etc/gdm3/custom.conf` wurde der Login stabiler und das Schwarzbild nach der Anmeldung verschwand.
+
+### Bereinigte Kernel-Parameter
+
+Im weiteren Verlauf wurden historische Kernel-Parameter aus der GRUB-Konfiguration entfernt, um alte Altlasten nicht weiter mitzuschleppen. Der Login blieb danach stabil und die Helligkeitskonfiguration funktionierte weiterhin.
+
+### Poweroff-Verhalten weiterhin fehlerhaft
+
+Trotz stabilerem Login und bereinigter Kernel-Parameter bleibt ein separates Problem bestehen:
+
+* `systemctl poweroff` schaltet den iMac sichtbar aus
+* der Rechner landet dabei jedoch offenbar nicht in einem gesunden finalen Aus-Zustand
+* für einen späteren Start ist häufig ein langer Druck auf den Einschaltknopf nötig, bevor das Gerät anschließend wieder normal eingeschaltet werden kann
+
+Dieses Verhalten spricht eher für ein Low-Level-Problem im Bereich ACPI, Apple-Firmware oder Hardware-Power-State als für ein GNOME- oder Suspend-Problem.
+
+### Zusätzliche offene Punkte für spätere Analyse
+
+* Poweroff-/S5-Verhalten getrennt vom Suspend-Verhalten analysieren
+* prüfen, ob das fehlerhafte Ausschaltverhalten unabhängig vom Aufrufweg identisch ist, also sowohl bei `systemctl poweroff` als auch beim Ausschalten über die GNOME-Oberfläche
+* Kernel- und Firmware-seitige Besonderheiten des iMac weiter untersuchen, falls das Thema später erneut vertieft werden soll
