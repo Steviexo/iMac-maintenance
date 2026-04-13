@@ -187,6 +187,7 @@ Trotz stabilerem Login und bereinigter Kernel-Parameter bleibt ein separates Pro
 * `systemctl poweroff` schaltet den iMac sichtbar aus
 * der Rechner landet dabei jedoch offenbar nicht in einem gesunden finalen Aus-Zustand
 * für einen späteren Start ist häufig ein langer Druck auf den Einschaltknopf nötig, bevor das Gerät anschließend wieder normal eingeschaltet werden kann
+* ein Vergleichstest zeigte identisches Verhalten sowohl beim Ausschalten über die GNOME-Oberfläche als auch bei systemctl poweroff
 
 Dieses Verhalten spricht eher für ein Low-Level-Problem im Bereich ACPI, Apple-Firmware oder Hardware-Power-State als für ein GNOME- oder Suspend-Problem.
 
